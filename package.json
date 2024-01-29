@@ -1,0 +1,29 @@
+{
+  "name": "vue-vue-prototype-sfc",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "fb-login": "firebase login",
+    "deploy": "vite build && firebase deploy"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "chart.js": "^4.4.1",
+    "firebase": "^8.10.1",
+    "fontawesome": "^5.6.3",
+    "install": "^0.13.0",
+    "npm": "^10.2.4",
+    "vue": "^3.2.36",
+    "vue-chartjs": "^5.2.0",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "firebase-tools": "^13.0.1",
+    "sass": "^1.69.5",
+    "vite": "^4.4.11"
+  }
+}

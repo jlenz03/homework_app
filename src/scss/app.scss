@@ -1,0 +1,108 @@
+// overrides
+$blue:    #007bee;
+$indigo:  #6610fe;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffcc00;
+$green:   #28a745;
+$teal:    #20c997;
+$cyan:    #17a2b8;
+
+$primary:       #8AB3C9;
+$secondary: #705d56;
+$danger: #ffff;
+
+
+// include bootstrap
+@import "bootstrap";
+
+// custom styles
+body {
+  background-color: #FEEDDD;
+  font-family: Avenir;
+
+  /*--bs-body-font-family: "Apple Chancery";*/
+
+}
+a {
+  color: #70abaf;
+}
+body {
+  .btn {
+    margin: 1%;
+
+  }
+}
+
+.btn-danger {
+  --bs-btn-border-color: #000;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #bb2d3b;
+  --bs-btn-hover-border-color: #b02a37;
+  margin: 7px;}
+
+
+input.larger {
+  width: 20px;
+  height: 20px;
+}
+* .container .my-5 .bg-white, .stats .progress{
+  margin: 2%;
+}
+.border-dark {
+  border-color: #705d56 !important;
+}
+/* I promise I only have these important tags bc the bootstrap code says important too!! */
+h4 {
+  background-color: #705d56;
+  color: white;
+  padding: 9px;
+  margin: 0;
+  opacity: 1;
+}
+.navbar {
+  background-color: #705d56;
+  a {
+    --bs-nav-link-color:white;
+    --bs-nav-link-hover-color: #8AB3C9;
+    --bs-navbar-active-color:#99e1d9;
+  }
+}
+
+body .navbar-toggler-icon{
+  color: white;
+}
+
+
+.modal-btn .d-flex  .justify-content-end{
+
+  justify-content: end;
+}
+.btn-outline-light{
+  --bs-btn-border-radius: 30px;
+  padding: 1%;
+}
+.red {
+  color: red;
+  font-weight: bold;
+}
+.row .color-block {
+  border-left: 10px solid ;
+
+}
+/* just here for the purpose of the hardcoded pages
+will delete later */
+.row .col-6.color-block2 {
+  border-left: 10px solid green;
+}
+.row .color-block3 {
+  border-left: 10px solid red;
+
+}
+
+
+
+
+
