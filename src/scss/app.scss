@@ -10,13 +10,13 @@ $green:   #28a745;
 $teal:    #20c997;
 $cyan:    #17a2b8;
 
-$primary:       #8AB3C9;
+$primary: #0bcb1a;
 $secondary: #705d56;
 $danger: #ffff;
 
 
 // include bootstrap
-@import "bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 // custom styles
 body {

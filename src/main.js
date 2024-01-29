@@ -1,6 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 import '@/scss/app.scss';
-import 'bootstrap';
+import 'bootstrap'; //js
 // import 'fontawesome';
 // import 'vue-chartjs';
 
