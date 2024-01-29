@@ -81,7 +81,7 @@ export default {
         <!--this section below is gonna be part of user profile and will hold tier information and user information-->
         <h1><a href="#" class="navbar-brand">
           <img src="../../images/gold-tier.png" class="" alt="trophy tier for user" width="85" height="79">
-        </a>Hello, John</h1>
+        </a>Hello, Julia</h1>
 
       </div>
       <hr>
