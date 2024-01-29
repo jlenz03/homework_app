@@ -1,8 +1,8 @@
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 import '@/scss/app.scss';
 import 'bootstrap';
 // import 'fontawesome';
-// import 'vue-chartjs';
+import 'vue-chartjs';
 
 
 

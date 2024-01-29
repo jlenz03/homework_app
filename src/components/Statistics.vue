@@ -47,35 +47,39 @@ export default {
 
   },
 
-  // computed: {
-  //   completedAssignmentsCount() {
-  //     // return this.toDoList.filter((item) => item.completed).length;
-  //   },
-  //
-  //   LateAssignmentsCount() {
-  //
-  //     // return this.toDoList.filter((item) => !item.completed && new Date(item.due) < item.user_complete).length;
-  //   },
-  //
-  //   onTimeCompletionRate() {
-  //     // const completedAssignments = this.toDoList.filter((item) => item.completed);
-  //     // const totalAssignments = completedAssignments.length;
-  //     //
-  //     // const completedOnTime = completedAssignments.filter((item) => !this.isAssignmentLate(item)).length;
-  //     //
-  //     // // Check if totalAssignments is not 0 to avoid division by zero
-  //     // // const userStats = totalAssignments !== 0 ? (completedOnTime / totalAssignments) * 100 : 0;
-  //     //
-  //     // return totalAssignments !== 0 ? (completedOnTime / totalAssignments) * 100 : 0;
-  //   },
-  // },
-  //
-  // methods: {
-  //   isAssignmentLate(item) {
-  //
-  //     // return  new Date(item.due) < item.user_complete;
-  //   },
-  // },
+  computed: {
+    completedAssignmentsCount() {
+      const count = this.toDoList.filter((item) => item.completed).length;
+      console.log('Completed Assignments Count:', count);
+      return count;
+    },
+
+    LateAssignmentsCount() {
+
+      const count = this.toDoList.filter((item) => !item.completed && new Date(item.due) < item.user_complete).length;
+      console.log('Late Assignments Count:', count);
+      return count;
+    },
+
+    onTimeCompletionRate() {
+      const completedAssignments = this.toDoList.filter((item) => item.completed);
+      const totalAssignments = completedAssignments.length;
+
+      const completedOnTime = completedAssignments.filter((item) => !this.isAssignmentLate(item)).length;
+
+      // Check if totalAssignments is not 0 to avoid division by zero
+      // const userStats = totalAssignments !== 0 ? (completedOnTime / totalAssignments) * 100 : 0;
+
+      return totalAssignments !== 0 ? (completedOnTime / totalAssignments) * 100 : 0;
+    },
+  },
+
+  methods: {
+    isAssignmentLate(item) {
+
+      return  new Date(item.due) < item.user_complete;
+    },
+  },
 };
 
 
@@ -84,6 +88,12 @@ export default {
 <template>
   <div class="stats text-center">
     <h3> How are We Doing?</h3>
+    <div>
+      <p>Completed Assignments Count: {{ completedAssignmentsCount }}</p>
+      <p>Late Assignments Count: {{ LateAssignmentsCount }}</p>
+      <p>On-time completion rate: {{ onTimeCompletionRate }}%</p>
+    </div>
+
     <div class="row">
       <div class="col-sm">
         <div class="card text-center">
@@ -107,7 +117,7 @@ export default {
     </div>
 <!--    eventually going to be a circle graph and show percentage according to streak-->
 <div>
-<!--  <p>On-time completion rate: {{ onTimeCompletionRate }}%</p>-->
+  <p>On-time completion rate: {{ onTimeCompletionRate }}%</p>
 </div>
     <div>
 
