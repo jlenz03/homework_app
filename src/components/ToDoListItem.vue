@@ -104,7 +104,7 @@ export default {
 
       </div>
       <div class="col d-flex justify-content-end">
-        <span class="p">{{ item.formatDate()}}</span>
+        <span class="p ">{{ item.formatDate()}}</span>
 
 
 

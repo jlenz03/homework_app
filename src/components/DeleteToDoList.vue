@@ -41,8 +41,8 @@ export default {
 
 <template>
   <span class="delete-class-modal">
-                      <a  href="#" data-bs-toggle="modal"  :data-bs-target="'#deleteModal' + uid"  class=" btn btn-danger">
-                        Delete <i class="fa-solid fa-trash"></i>
+                      <a  href="#" data-bs-toggle="modal"  :data-bs-target="'#deleteModal' + uid" class="delete-link" >
+                        <i class="fa-solid fa-trash"></i>
                       </a>
 
             <div class="modal fade" :id="'deleteModal' + uid" aria-hidden="true" :aria-labelledby=" 'deleteModal' + uid" tabindex="-1">

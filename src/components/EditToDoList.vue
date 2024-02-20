@@ -87,7 +87,7 @@ export default {
 <template>
   <span class="edit-item-modal">
 
-    <a href="#" data-bs-toggle="modal"  :data-bs-target="'#editModal' + uid" class=""> Break it Down Tasks</a>
+    <a href="#" data-bs-toggle="modal"  :data-bs-target="'#editModal' + uid" class="edit-link"> <i class="fa-solid fa-pencil"></i></a>
      <app-modal  :id="'editModal' + uid" title="Edit Assignment">
 
       <div class="row">
