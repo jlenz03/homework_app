@@ -1,5 +1,7 @@
 <script>
 
+import firebase from "firebase/app";
+
 export default {
   name: "Navigation",
 
@@ -7,9 +9,9 @@ export default {
     title: {
       type: String,
     },
-    //eventually I'll make
-    // authUser: {
-    //   required: true},
+    // eventually I'll make
+    authUser: {
+      required: true},
 
     toDoList: {
       type: Array,
@@ -22,23 +24,23 @@ export default {
     },
 
   },
-  // methods: {
-  //   login(){
-  //     // : Login with Google
-  //     let provider = new firebase.auth.GoogleAuthProvider();
-  //
-  //     firebase.auth()
-  //         .signInWithPopup(provider)
-  //         .catch(error => {
-  //           //let user know
-  //           console.error(error, error.code, error.message);
-  //         })
-  //   },
-  //
-  //   logout(){
-  //     // TODO: logout
-  //   },
-  // },
+  methods: {
+    login(){
+      // : Login with Google
+      let provider = new firebase.auth.GoogleAuthProvider();
+
+      firebase.auth()
+          .signInWithPopup(provider)
+          .catch(error => {
+            //let user know
+            console.error(error, error.code, error.message);
+          })
+    },
+
+    logout(){
+      // TODO: logout
+    },
+  },
 }
 </script>
 
@@ -76,14 +78,15 @@ export default {
           <li data-bs-toggle="offcanvas" class="nav-item">
             <router-link   class="nav-link"  to="/classes" >Classes</router-link>
           </li>
-          <li data-bs-toggle="offcanvas" class="nav-item">
-<!--            <router-link class="nav-link" to="/news">News</router-link>-->
-          </li>
+<!--          <li data-bs-toggle="offcanvas" class="nav-item">-->
+<!--            <router-link class="nav-link" to="/register">Register</router-link>-->
+<!--          </li>-->
+<!--            <li data-bs-toggle="offcanvas" class="nav-item">-->
+<!--              <router-link class="nav-link" to="/sign-in">Login</router-link>-->
+<!--            </li>-->
 
-          <li>
-<!--                  <router-link class="nav-link d-flex justify-content-end" to="/users">LOGIN  </router-link>-->
-<!--            <button type="button" class="btn btn-outline-light d-flex justify-content-end"> <i class="fa-solid fa-user"></i></button>-->
-          </li>
+            <li v-if="authUser"><a href="#" @click.prevent="logout">Logout</a></li>
+            <li v-else><a href="#" @click.prevent="login">Login</a></li>
 
         </ul>
       </div>

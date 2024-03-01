@@ -8,6 +8,7 @@ import ToDoList from "@/components/ToDoList.vue";
 import Statistics from "@/components/Statistics.vue";
 import ClassItem from "@/models/ClassItemModel";
 import Timer from "@/models/TimerModel";
+import { User } from '@/models/User';
 import { firebase, db, auth, storage } from "@/firebase/index";
 import Assignment from "@/models/Assignment";
 import Navigation from "@/components/Navigation.vue";
@@ -41,11 +42,30 @@ export default defineComponent({
         new Timer('', '',''),
 
       ],
+      authUser: null, // Initialize authUser property
 
       selectedItem:{}
     }
   },
 
+  // called after the instance has been created
+  created() {
+    // : check for logged in user
+    // called when the page loads, user logins, and logs out
+    firebase.auth().onAuthStateChanged(user=> {
+      if(user){
+        //they are logged in
+        this.authUser = new User(user);
+
+
+      }else{
+        //not logged in
+        console.log('logged out');
+        this.authUser = null;
+      }
+
+    })
+  },
   // methods: usually "events" triggered by v-on:
   methods: {
 
@@ -93,6 +113,17 @@ export default defineComponent({
 
 mounted() {
     this.loadClassList();
+
+  // Initialize Firebase authentication
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      // User is signed in
+      this.authUser = user;
+    } else {
+      // User is signed out
+      this.authUser = null;
+    }
+  });
 }
 
 })
