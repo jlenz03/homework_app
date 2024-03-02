@@ -94,7 +94,11 @@ export default {
               <router-link  class="nav-link" to="/sign-in">Login</router-link>
             </li>
 
+
         </ul>
+          <div v-if="authUser">
+            <img :src="authUser.photoURL" class="avatar" alt="">
+          </div>
       </div>
 
 
