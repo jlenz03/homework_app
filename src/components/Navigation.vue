@@ -25,33 +25,40 @@ export default {
 
   },
   methods: {
-    login(){
-      // : Login with Google
-      let provider = new firebase.auth.GoogleAuthProvider();
+    // login(){
+    //   // : Login with Google
+    //   let provider = new firebase.auth.GoogleAuthProvider();
+    //
+    //   firebase.auth()
+    //       .signInWithPopup(provider)
+    //       .catch(error => {
+    //         //let user know
+    //         console.error(error, error.code, error.message);
+    //       })
+    // },
 
-      firebase.auth()
-          .signInWithPopup(provider)
-          .catch(error => {
-            //let user know
-            console.error(error, error.code, error.message);
+    logout() {
+      firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            // Successfully signed out
+            console.log("User signed out");
+            //router.push({ name: "sign-in" }); // Redirect to sign-in page
+            //ask tyler how to get it to redirect without having to refresh it or if that's just something you gotta deal with
+
+
           })
-    },
+          .catch((error) => {
+            console.error("Sign out error:", error);
+          });
 
-    logout(){
-      // TODO: logout
     },
   },
 }
 </script>
 
 <template>
-<!--  <ul class="list-unstyled components">-->
-<!--   -->
-<!--    <li v-if="authUser"><a href="#" @click.prevent="logout">Logout</a></li>-->
-<!--    <li v-else><a href="#" @click.prevent="login">Login</a></li>-->
-<!--  </ul>-->
-
-
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="#"> Homework App</a>
@@ -69,7 +76,6 @@ export default {
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
           <li data-bs-toggle="offcanvas" class="nav-item">
-<!--            <a class="nav-link" aria-current="page" href=" ">Home</a>-->
             <router-link   class="nav-link" to="/">Home</router-link>
           </li>
           <li data-bs-toggle="offcanvas" class="nav-item">
@@ -81,12 +87,12 @@ export default {
 <!--          <li data-bs-toggle="offcanvas" class="nav-item">-->
 <!--            <router-link class="nav-link" to="/register">Register</router-link>-->
 <!--          </li>-->
-<!--            <li data-bs-toggle="offcanvas" class="nav-item">-->
-<!--              <router-link class="nav-link" to="/sign-in">Login</router-link>-->
-<!--            </li>-->
+
 
             <li v-if="authUser"><a href="#" @click.prevent="logout">Logout</a></li>
-            <li v-else><a href="#" @click.prevent="login">Login</a></li>
+            <li data-bs-toggle="offcanvas" class="nav-item" v-else>
+              <router-link  class="nav-link" to="/sign-in">Login</router-link>
+            </li>
 
         </ul>
       </div>

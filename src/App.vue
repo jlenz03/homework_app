@@ -134,16 +134,16 @@ mounted() {
 
 <template>
   <div id="app">
-  <navigation
-      :class-list="classList"
-      :to-do-list="toDoList"
-      auth-user="">
-
-  </navigation>
-  <router-view
-      :class-list="classList"
-      :to-do-list="toDoList"
-  ></router-view>
+    <navigation
+        :class-list="classList"
+        :to-do-list="toDoList"
+        :auth-user="authUser"
+    ></navigation>
+    <router-view
+        :class-list="classList"
+        :to-do-list="toDoList"
+        :auth-user="authUser"
+    ></router-view>
 
 
 
