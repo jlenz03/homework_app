@@ -21,10 +21,13 @@ $danger: #ffff;
 // custom styles
 body {
   background-color: #FEEDDD;
-  font-family: Avenir;
+  font-family:  sans-serif;
+  //font-family:  "Georgia", sans-serif;
 
   /*--bs-body-font-family: "Apple Chancery";*/
-
+  h1,h2, h3 {
+    font-family: "American Typewriter", serif;
+  }
 }
 a {
   color: #70abaf;
@@ -119,6 +122,14 @@ i.fa-solid.fa-bars{
   border-left: 10px solid ;
 
 }
+ div.container.rounded-3.border.border-2.border-dark.my-5.bg-white.sign-in{
+   padding: 2%;
+   .btn{
+     margin: .5%;
+
+   }
+ }
+
 
 
 

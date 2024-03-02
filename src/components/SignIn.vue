@@ -59,16 +59,45 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1>Sign In</h1>
-    <p><input type="text" placeholder="Email" v-model="email" /></p>
-    <p><input type="password" placeholder="Password" v-model="password" /></p>
 
-    <p><button @click="signIn">Sign In</button></p>
-    <p><button @click="signInWithGoogle">Sign In With Google</button></p>
-    <p>Dont have an account?</p>
-    <p><button @click="register">Register Here</button></p>
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="container rounded-3 border border-2 border-dark my-5 bg-white sign-in p-5">
+      <h1 class="text-center mb-4">Sign In</h1>
+      <p class="text-center"> You need to be signed in to gain access to the homework tracking app</p>
+
+      <!-- Email Input -->
+      <div class="mb-3">
+        <label for="emailsign" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="emailsign" v-model="email" placeholder="name@example.com">
+      </div>
+
+      <!-- Password Input -->
+      <div class="mb-3">
+        <label for="passwordsign" class="form-label">Password</label>
+        <input type="password" class="form-control" id="passwordsign" v-model="password" placeholder="password">
+      </div>
+
+      <!-- Sign In Button -->
+      <button class="btn btn-primary btn-block mb-3" @click="signIn">Sign In</button>
+
+      <!-- Alternative Sign-In Options -->
+      <div class="text-center mb-3">
+        <p>Or sign in with</p>
+        <button class="btn btn-secondary me-2" @click="signInWithGoogle">
+          <i class="fab fa-google me-1"></i> Google
+        </button>
+        <!-- Add other sign-in options here -->
+      </div>
+
+      <!-- Register Link -->
+      <div class="text-center">
+        <p>Don't have an account?</p>
+        <button class="btn btn-outline-primary" @click="register">Register Here</button>
+      </div>
+    </div>
   </div>
+
+
 </template>
 
 <style>
