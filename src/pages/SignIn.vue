@@ -2,9 +2,20 @@
 import { ref } from 'vue';
 import { auth } from '@/firebase';
 import { useRouter } from 'vue-router';
-import firebase from 'firebase/app'; // Import firebase
+import firebase from 'firebase/app';
+import Register from "@/components/Register.vue";
 
 export default {
+  components: {Register},
+  props: {
+    userInfo: {
+      type: Array,
+      required: true,
+    },
+    authUser: {
+      type: Object,
+    },
+  },
   setup() {
     const email = ref('');
     const password = ref('');
@@ -40,20 +51,9 @@ export default {
           });
     };
 
-    const register = () => {
-      auth.createUserWithEmailAndPassword(email.value, password.value)
-          .then((userCredential) => {
-            const user = userCredential.user;
-            console.log('Successfully registered!', user);
-            router.push({ name: 'home' }); // Redirect after registration
-          })
-          .catch((error) => {
-            console.error(error.code, error.message);
-            alert('Registration Error. Please try again.');
-          });
-    };
 
-    return { email, password, signIn, signInWithGoogle, register };
+
+    return { email, password, signIn, signInWithGoogle };
   },
 };
 </script>
@@ -93,7 +93,11 @@ export default {
       <!-- Register Link -->
       <div class="text-center">
         <p>Don't have an account?</p>
-        <button class="btn btn-outline-primary" @click="register">Register Here</button>
+        <a class=" btn btn-outline-primary" data-bs-toggle="modal" href="#Register" role="button">Create an Account</a>
+
+        <register id="Register" :authUser="authUser" :user-info="userInfo"></register>
+
+        <!--        <button class="btn btn-outline-primary" @click="register">Register Here</button>-->
       </div>
     </div>
   </div>

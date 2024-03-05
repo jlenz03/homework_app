@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Classes from '@/components/Classes.vue';
-import Home from '@/components/Home.vue';
-import Assignments from '@/components/Assignments.vue';
-import SignIn from '@/components/SignIn.vue';
+import Classes from '@/pages/Classes.vue';
+import Home from '@/pages/Home.vue';
+import Assignments from '@/pages/Assignments.vue';
+import SignIn from '@/pages/SignIn.vue';
 import { auth } from '@/firebase';
 
 const routes = [

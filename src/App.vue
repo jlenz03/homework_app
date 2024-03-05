@@ -10,9 +10,11 @@ import { firebase, db, auth, storage } from "@/firebase/index";
 import Assignment from "@/models/Assignment";
 import Navigation from "@/components/Navigation.vue";
 import ClassList from "@/components/ClassList.vue";
+import SignIn from "@/pages/SignIn.vue";
+
 
 export default defineComponent({
-  components: { ClassList, Navigation, Statistics, ToDoList, AddTaskModal },
+  components: { ClassList, Navigation, Statistics, ToDoList, AddTaskModal, SignIn },
 
   data() {
     return {
@@ -23,8 +25,16 @@ export default defineComponent({
       ],
       // authUser: null,
       selectedItem: {},
-      authUser: {}
     };
+  },
+  props: {
+
+    authUser: {
+      type: Object,
+    },
+    userInfo:{
+      type: Array,
+    }
   },
 
   created() {
@@ -78,11 +88,14 @@ export default defineComponent({
         :class-list="classList"
         :to-do-list="toDoList"
         :auth-user="authUser"
+        :user-info="userInfo"
     ></navigation>
     <router-view
         :class-list="classList"
         :to-do-list="toDoList"
         :auth-user="authUser"
+        :user-info="userInfo"
+
     ></router-view>
   </div>
 </template>

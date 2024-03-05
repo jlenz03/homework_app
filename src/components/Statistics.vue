@@ -52,7 +52,7 @@ export default {
   //     // return this.toDoList.filter((item) => item.completed).length;
   //   },
   //
-  //   LateAssignmentsCount() {
+  //   lateAssignmentsCount() {
   //
   //     // return this.toDoList.filter((item) => !item.completed && new Date(item.due) < item.user_complete).length;
   //   },

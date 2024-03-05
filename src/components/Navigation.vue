@@ -26,17 +26,6 @@ export default {
 
   },
   methods: {
-    // login(){
-    //   // : Login with Google
-    //   let provider = new firebase.auth.GoogleAuthProvider();
-    //
-    //   firebase.auth()
-    //       .signInWithPopup(provider)
-    //       .catch(error => {
-    //         //let user know
-    //         console.error(error, error.code, error.message);
-    //       })
-    // },
 
     logout() {
       firebase
