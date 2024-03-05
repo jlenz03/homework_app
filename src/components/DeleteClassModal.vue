@@ -21,6 +21,10 @@ export default {
     modelValue : {
       type: Object,
       required: true,
+    },
+    authUser:{
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['delete'],
@@ -29,7 +33,7 @@ export default {
       console.log(this.deleteClass); // Check the 'deleteClass' object
       this.$emit('delete', this.modelValue);
 
-      db.collection('classList').doc(this.modelValue.id).delete();
+      db.collection('users').doc(this.authUser.uid).collection('classList').doc(this.modelValue.id).delete();
 
 
 

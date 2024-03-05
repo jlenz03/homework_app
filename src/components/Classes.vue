@@ -15,6 +15,10 @@ export default {
       type: Array,
       required: true,
     },
+    authUser: {
+      type: Object,
+      default: () => ({})
+    }
   },
 
   methods: {
@@ -53,11 +57,13 @@ export default {
         <div class="modal-btn d-flex justify-content-end">
           <a class=" btn btn-primary" data-bs-toggle="modal" href="#AddClassModal" role="button"><i class="fa-solid fa-plus"></i> Add New Class</a>
         </div>
-        <add-class-modal id="AddClassModal" @add-class="addClass"></add-class-modal>
+        <add-class-modal id="AddClassModal" @add-class="addClass"
+                         :auth-user="authUser"></add-class-modal>
 
 
         <h1> Your Classes</h1>
-        <class-list :class-list="classList" @delete="subtract"></class-list>
+        <class-list :class-list="classList" @delete="subtract" v-if="authUser"
+                    :auth-user="authUser"></class-list>
 
       </div>
     </div>

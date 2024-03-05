@@ -23,6 +23,10 @@ export default {
       type: Array, // Assuming classList is an array
       required: true,
     },
+    authUser:{
+      type: Object,
+      default: () => ({})
+    }
 
 
   },
@@ -35,7 +39,6 @@ export default {
     addTask: function () {
       this.newTask.formatDate();
 
-      // Ensure all fields have defined values
       if (
           this.newTask.title === undefined ||
           this.newTask.due === undefined ||
@@ -49,7 +52,12 @@ export default {
         return;
       }
 
-      // Create a plain JavaScript object with the necessary properties
+      // Check if authUser is available
+      if (!this.authUser) {
+        console.error('User is not authenticated.');
+        return;
+      }
+
       const dueDate = new Date(this.newTask.due);
       // Set the time to 11:59 PM on the same day
       dueDate.setHours(23, 59, 0, 0);
@@ -64,8 +72,10 @@ export default {
         bid: this.newTask.bid,
       };
 
-      // : add task to Firebase
-      db.collection('toDoList')
+      // Add task to Firebase with user's ID
+      db.collection('users')
+          .doc(this.authUser.uid)
+          .collection('toDoList')
           .add(taskData)
           .then(docRef => {
             // Clear the form (reset the object)
@@ -75,9 +85,10 @@ export default {
             console.error('Error adding list item', error);
           })
           .finally(() => {
-            // Any additional code to run after success or failure
+            // Any cleanup or additional actions
           });
     },
+
   },
 
 };
@@ -119,23 +130,20 @@ export default {
     <app-modal id="homeworkModal" title="Homework" >
       <div class="row">
         <div class="col">
-          <label class="mr-sm-2" for="inputText"> Enter Title </label>
-          <input class=" py-3 form-control shadow" placeholder="input your title" type="text" id="inputText" v-model="newTask.title">
+          <label class="mr-sm-2" for="homeworkTitle">Enter Title</label>
+          <input class="py-3 form-control shadow" placeholder="Enter title" type="text" id="homeworkTitle" v-model="newTask.title">
 
-          <label class="mr-sm-2" for="inputClass">Class</label>
-          <select class="py-3 form-control shadow" id="inputClass" v-model="newTask.class_name">
-            <option selected>Choose Class...</option>
+          <label class="mr-sm-2" for="homeworkClass">Class</label>
+          <select class="py-3 form-control shadow" id="homeworkClass" v-model="newTask.class_name">
+            <option selected disabled>Choose Class...</option>
             <option v-for="classItem in classList" :key="classItem.name" :value="classItem.name">{{ classItem.name }}</option>
           </select>
 
-          <label for="inputDate">Due Date</label>
-          <input id="inputDate" class=" py-3 form-control shadow" type="date" v-model="newTask.due">
+          <label for="homeworkDue">Due Date</label>
+          <input class="py-3 form-control shadow" type="date" id="homeworkDue" v-model="newTask.due">
 
-          <label for="inputBreak"> Break it Down</label>
-          <!--eventually this will be an options list that users can choose and it'll output in a bulletin list-->
-          <input type="text" id="inputBreak" class=" py-3 form-control shadow" v-model="newTask.bid">
-          <!--don't want this to show on home page-->
-
+          <label for="homeworkBreak">Break it Down</label>
+          <input class="py-3 form-control shadow" type="text" id="homeworkBreak" v-model="newTask.bid">
 
           <div class="col-4">
             <button @click.prevent="addTask" type="submit" data-bs-dismiss="modal" class="mt-2 btn btn-primary">Add Homework</button>
@@ -148,23 +156,20 @@ export default {
     <app-modal id="projectModal" title="Project" >
       <div class="row">
         <div class="col">
-          <label class="mr-sm-2" for="inputText"> Enter Title </label>
-          <input class=" py-3 form-control shadow" placeholder="input your title" type="text" id="inputText" v-model="newTask.title">
+          <label class="mr-sm-2" for="projectTitle">Enter Title</label>
+          <input class="py-3 form-control shadow" placeholder="Enter title" type="text" id="projectTitle" v-model="newTask.title">
 
-          <label class="mr-sm-2" for="inputClass">Class</label>
-          <select class="py-3 form-control shadow" id="inputClass" v-model="newTask.class_name">
-            <option selected>Choose Class...</option>
+          <label class="mr-sm-2" for="projectClass">Class</label>
+          <select class="py-3 form-control shadow" id="projectClass" v-model="newTask.class_name">
+            <option selected disabled>Choose Class...</option>
             <option v-for="classItem in classList" :key="classItem.name" :value="classItem.name">{{ classItem.name }}</option>
           </select>
 
-          <label for="inputDate">Due Date</label>
-          <input id="inputDate" class=" py-3 form-control shadow" type="date" v-model="newTask.due">
+          <label for="projectDue">Due Date</label>
+          <input class="py-3 form-control shadow" type="date" id="projectDue" v-model="newTask.due">
 
-          <label for="inputBreak"> Break it Down</label>
-          <!--eventually this will be an options list that users can choose and it'll output in a bulletin list-->
-          <input type="text" id="inputBreak" class=" py-3 form-control shadow" v-model="newTask.bid">
-          <!--don't want this to show on home page-->
-
+          <label for="projectBreak">Break it Down</label>
+          <input class="py-3 form-control shadow" type="text" id="projectBreak" v-model="newTask.bid">
 
           <div class="col-4">
             <button @click.prevent="addTask" type="submit" data-bs-dismiss="modal" class="mt-2 btn btn-primary">Add Project</button>
@@ -177,23 +182,20 @@ export default {
     <app-modal id="quizModal" title="Quiz">
       <div class="row">
         <div class="col">
-          <label class="mr-sm-2" for="inputText"> Enter Title </label>
-          <input class=" py-3 form-control shadow" placeholder="input your title" type="text" id="inputText" v-model="newTask.title">
+          <label class="mr-sm-2" for="quizTitle">Enter Title</label>
+          <input class="py-3 form-control shadow" placeholder="Enter title" type="text" id="quizTitle" v-model="newTask.title">
 
-          <label class="mr-sm-2" for="inputClass">Class</label>
-          <select class="py-3 form-control shadow" id="inputClass" v-model="newTask.class_name">
-            <option selected>Choose Class...</option>
+          <label class="mr-sm-2" for="quizClass">Class</label>
+          <select class="py-3 form-control shadow" id="quizClass" v-model="newTask.class_name">
+            <option selected disabled>Choose Class...</option>
             <option v-for="classItem in classList" :key="classItem.name" :value="classItem.name">{{ classItem.name }}</option>
           </select>
 
-          <label for="inputDate">Due Date</label>
-          <input id="inputDate" class=" py-3 form-control shadow" type="date" v-model="newTask.due">
+          <label for="quizDue">Due Date</label>
+          <input class="py-3 form-control shadow" type="date" id="quizDue" v-model="newTask.due">
 
-          <label for="inputBreak"> Break it Down</label>
-          <!--eventually this will be an options list that users can choose and it'll output in a bulletin list-->
-          <input type="text" id="inputBreak" class=" py-3 form-control shadow" v-model="newTask.bid">
-          <!--don't want this to show on home page-->
-
+          <label for="quizBreak">Break it Down</label>
+          <input class="py-3 form-control shadow" type="text" id="quizBreak" v-model="newTask.bid">
 
           <div class="col-4">
             <button @click.prevent="addTask" type="submit" data-bs-dismiss="modal" class="mt-2 btn btn-primary">Add Quiz</button>
@@ -206,45 +208,41 @@ export default {
     <app-modal id="testModal" title="Test" >
       <div class="row">
         <div class="col">
-          <label class="mr-sm-2" for="inputText"> Enter Title </label>
-          <input class=" py-3 form-control shadow" placeholder="input your title" type="text" id="inputText" v-model="newTask.title">
+          <label class="mr-sm-2" for="testTitle">Enter Title</label>
+          <input class="py-3 form-control shadow" placeholder="Enter title" type="text" id="testTitle" v-model="newTask.title">
 
-          <label class="mr-sm-2" for="inputClass">Class</label>
-          <select class="py-3 form-control shadow" id="inputClass" v-model="newTask.class_name">
-            <option selected>Choose Class...</option>
+          <label class="mr-sm-2" for="testClass">Class</label>
+          <select class="py-3 form-control shadow" id="testClass" v-model="newTask.class_name">
+            <option selected disabled>Choose Class...</option>
             <option v-for="classItem in classList" :key="classItem.name" :value="classItem.name">{{ classItem.name }}</option>
           </select>
 
-          <label for="inputDate">Due Date</label>
-          <input id="inputDate" class=" py-3 form-control shadow" type="date" v-model="newTask.due">
+          <label for="testDue">Due Date</label>
+          <input class="py-3 form-control shadow" type="date" id="testDue" v-model="newTask.due">
 
-          <label for="inputBreak"> Break it Down Tasks (Optional)</label>
-<!--          this is where break it down tasks will appear as you add more of them-->
+          <label for="testBreak">Break it Down Tasks (Optional)</label>
+          <!-- This is where break it down tasks will appear as you add more of them -->
           <ul>
-            <li> </li>
-
+            <li><!-- Add tasks here --></li>
           </ul>
 
+          <!-- Add more tasks dropdown -->
           <div class="dropdown">
-            <button type="button" class="btn btn-outline " data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <button type="button" class="btn btn-outline" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <i class="fa-solid fa-plus"></i>
             </button>
             <form class="dropdown-menu p-4">
               <div class="mb-3">
-                <label class="mr-sm-2" for="inputText"> Enter Task </label>
-                <input class=" py-3 form-control shadow" placeholder="input your title" type="text" id="inputText" v-model="newTask.title">
+                <label class="mr-sm-2" for="testTaskTitle">Enter Task</label>
+                <input class="py-3 form-control shadow" placeholder="Enter task title" type="text" id="testTaskTitle">
               </div>
               <div class="mb-3">
-                <label for="inputDate">Due Date</label>
-                <input id="inputDate" class=" py-3 form-control shadow" type="date" >
-<!--                v-model="newTask.due"-->
+                <label for="testTaskDue">Due Date</label>
+                <input class="py-3 form-control shadow" type="date" id="testTaskDue">
               </div>
-
               <button type="submit" class="btn btn-primary">Add New Task</button>
             </form>
           </div>
-
-
 
           <div class="col-4">
             <button @click.prevent="addTask" type="submit" data-bs-dismiss="modal" class="mt-2 btn btn-primary">Add Test</button>
@@ -259,3 +257,6 @@ export default {
 <style scoped>
 
 </style>
+
+
+

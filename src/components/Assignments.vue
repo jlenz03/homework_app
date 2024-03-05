@@ -40,6 +40,10 @@ emits: ['delete'],
       type: Array,
       required: true,
     },
+    authUser: {
+      type: Object,
+      default: () => ({})
+    }
     // modelValue: {
     //   type: Object,
     //   required: true,
@@ -78,7 +82,8 @@ emits: ['delete'],
         </a>
       </div>
 
-      <add-task-modal id="AddTaskModal" :class-list="classList" @add-task="addTask"></add-task-modal>
+      <add-task-modal id="AddTaskModal" :class-list="classList" @add-task="addTask"
+                      :auth-user="authUser"></add-task-modal>
 
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -94,7 +99,9 @@ emits: ['delete'],
           <div class="row rounded bg-white">
             <to-do-list title="Due Tomorrow"
                         :class-list="classList"
-                        collection="tomorrowList">
+                        collection="tomorrowList"
+                        v-if="authUser"
+                        :auth-user="authUser">
 
 
 <!--              <template v-slot:bid>-->
@@ -104,7 +111,9 @@ emits: ['delete'],
 
             <to-do-list title="Due Next Week"
                         collection="weekList"
-                        :class-list="classList" >
+                        :class-list="classList"
+                        v-if="authUser"
+                        :auth-user="authUser">
 
               <template v-slot:bid>
 
@@ -115,6 +124,8 @@ emits: ['delete'],
             <to-do-list title="Due Sometime"
                         collection="sometimeList"
                         :class-list="classList"
+                        v-if="authUser"
+                        :auth-user="authUser"
                        >
 <!--              <template v-slot:bid="{ item }">-->
 <!--                <EditToDoList :modelValue="item" @update:modelValue="updateToDoList"></EditToDoList>-->

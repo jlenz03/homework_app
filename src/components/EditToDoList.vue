@@ -37,6 +37,10 @@ export default {
       type: Array,
       required: true,
     },
+    authUser:{
+      type: Object,
+      default: () => ({})
+    }
   },
   emits: ['update:modelValue'],
 
@@ -60,7 +64,7 @@ export default {
       console.log(this.editTask);
 
       // Update the data in the Firebase database
-      db.collection('toDoList').doc(this.modelValue.id)
+      db.collection('users').doc(this.authUser.uid).collection('toDoList').doc(this.modelValue.id)
           .update({
             title: this.editTask.title,
             due: this.formatStringToTimestamp(this.inputDate),

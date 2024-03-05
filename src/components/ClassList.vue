@@ -17,21 +17,32 @@ export default {
       type: String,
       default: '',
     },
+    authUser: {
+      type: Object,
+    }
 
   },
   emits: ['delete'],
 
   methods: {
     loadClassList() {
+      if (!this.authUser) {
+        console.error('No authUser provided');
+        return;
+      }
+
       // Load classes from Firebase into classList array
-      db.collection("classList").onSnapshot(snapshot => {
-        this.classList = snapshot.docs.map(doc => new ClassItem(
-            doc.data().name,
-            doc.data().color,
-            doc.id));
-      });
+      db.collection('users').doc(this.authUser.uid).collection('classList')
+          .onSnapshot(snapshot => {
+            this.classList = snapshot.docs.map(doc => new ClassItem(
+                doc.data().name,
+                doc.data().color,
+                doc.id
+            ));
+          });
     },
   },
+
   // IMPORTANT!!!
   mounted() {
     this.loadClassList();
@@ -47,6 +58,8 @@ export default {
             v-for="(item, i) in classList"
             :key="`classItem-${i}`"
             :item="item"
+            v-if="authUser"
+            :auth-user="authUser"
             @delete="deleteIt => $emit('delete', deleteIt)"
             :class-list="classList"
         ></class-list-item>

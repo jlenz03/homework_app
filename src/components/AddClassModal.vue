@@ -23,6 +23,11 @@ export default {
       type: String,
       required: true,
     },
+    authUser:{
+      type:Object,
+      default: () => ({})
+
+    }
 
 
   },
@@ -42,7 +47,7 @@ export default {
       // });
 
       // : add recipe to firebase
-      db.collection('classList')
+      db.collection('users').doc(this.authUser.uid).collection('classList')
           .add(this.newClass)
           .then(docRef => {
 

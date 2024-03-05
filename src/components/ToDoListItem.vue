@@ -2,7 +2,8 @@
 import { firebase, db, auth, storage } from "@/firebase/index";
 import EditToDoList from "@/components/EditToDoList.vue";
 import DeleteToDoList from "@/components/DeleteToDoList.vue";
-// import DeleteClassModal from "@/components/DeleteClassModal.vue";
+// import ToDoList from "@/components/ToDoList.vue";
+
 export default {
   name: "ToDoListItem",
   components: { DeleteToDoList, EditToDoList},
@@ -28,6 +29,9 @@ export default {
       type: Array,
       required: true,
     },
+    authUser: {
+      type: Object,
+    }
   },
 
   methods: {
@@ -65,7 +69,7 @@ export default {
       // Use the doc method with the document ID
       const assignmentId = this.item.id; // Ensure you have the correct property name
 
-      db.collection("toDoList")
+      db.collection('users').doc(this.authUser.uid).collection('toDoList')
           .doc(assignmentId)
           .update({
             completed: this.item.completed,
@@ -93,10 +97,14 @@ export default {
         <span class="p"><strong>{{ item.class_name }}</strong> {{ item.type }}</span>
         <br>
 
-        <EditToDoList :model-value="item" @update:modelValue="updateToDoList" :class-list="classList"></EditToDoList>
+        <EditToDoList :model-value="item" @update:modelValue="updateToDoList" :class-list="classList"
+
+                      :auth-user="authUser"></EditToDoList>
     <slot name="placement">
       <delete-to-do-list
-        :model-value="item" @delete="deleteToDo => $emit('delete', deleteToDo)">
+        :model-value="item" @delete="deleteToDo => $emit('delete', deleteToDo)"
+
+        :auth-user="authUser">
     </delete-to-do-list></slot>
 
 

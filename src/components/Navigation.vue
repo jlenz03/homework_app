@@ -11,6 +11,7 @@ export default {
     },
     // eventually I'll make
     authUser: {
+      type: Object,
       required: true},
 
     toDoList: {

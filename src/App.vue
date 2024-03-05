@@ -1,7 +1,4 @@
-
-
-<script >
-
+<script>
 import { defineComponent } from "vue";
 import AddTaskModal from "@/components/AddTaskModal.vue";
 import ToDoList from "@/components/ToDoList.vue";
@@ -15,121 +12,64 @@ import Navigation from "@/components/Navigation.vue";
 import ClassList from "@/components/ClassList.vue";
 
 export default defineComponent({
-  components: {ClassList, Navigation, Statistics, ToDoList, AddTaskModal},
+  components: { ClassList, Navigation, Statistics, ToDoList, AddTaskModal },
 
-  data: function() {
+  data() {
     return {
-      classList: [
-      ],
-      props: {
-        classList: {
-          type: Array,
-          required: true,
-        },
-        toDoList: {
-          type: Array,
-          required: true,
-        },
-        modelValue : {
-          type: Object,
-          required: true,
-        }
-      },
-
+      classList: [],
       toDoList: [],
-//got to figure out if I'm going to do a new model for this or figure out how to reuse my timer title
       breakItDownList: [
-        new Timer('', '',''),
-
+        new Timer('', '', ''),
       ],
-      authUser: null, // Initialize authUser property
-
-      selectedItem:{}
-    }
+      // authUser: null,
+      selectedItem: {},
+      authUser: {}
+    };
   },
 
-  // called after the instance has been created
   created() {
-    // : check for logged in user
-    // called when the page loads, user logins, and logs out
-    firebase.auth().onAuthStateChanged(user=> {
-      if(user){
-        //they are logged in
+    // Check for logged-in user
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // They are logged in
         this.authUser = new User(user);
-
-
-      }else{
-        //not logged in
+      } else {
+        // Not logged in
         console.log('logged out');
         this.authUser = null;
       }
+    });
 
-    })
+    // Load initial data
+    this.loadClassList();
   },
-  // methods: usually "events" triggered by v-on:
+
   methods: {
-
-      loadClassList() {
-        // Load classes from Firebase into classList array
-        db.collection("classList").onSnapshot(snapshot => {
-          this.classList = snapshot.docs.map(doc => new ClassItem(doc.data().name, doc.data().color));
-        });
-      },
-    addClass: function (newClassFromModal) {
-      // add item to the list
+    loadClassList() {
+      db.collection("classList").onSnapshot(snapshot => {
+        this.classList = snapshot.docs.map(doc => new ClassItem(doc.data().name, doc.data().color));
+      });
+    },
+    addClass(newClassFromModal) {
       this.classList.push(newClassFromModal);
-
     },
-    addTask: function (newTaskFromModal) {
-      console.log('new task from modal', newTaskFromModal);
-      // add item to the list
+    addTask(newTaskFromModal) {
       this.toDoList.push(newTaskFromModal);
-
     },
-    addTimer(timer){
-      //this.timers.push(timer);
+    addTimer(timer) {
       this.toDoList.push(new Assignment('New Timer', '2023-12-31', 'false', 'Some Class', 'Some Type', 'Some Bid'));
     },
-
-    subtract(item){
-      this.classList.splice(this.classList.indexOf(item),1);
-
+    subtract(item) {
+      this.classList.splice(this.classList.indexOf(item), 1);
     },
-
     editClass(item) {
-      this.selectedItem = item
+      this.selectedItem = item;
     },
-
-    deleteClass(item){
-      this.selectedItem = item
-
+    deleteClass(item) {
+      this.selectedItem = item;
     }
-  },
-
-  computed: {
-
-  },
-
-
-mounted() {
-    this.loadClassList();
-
-  // Initialize Firebase authentication
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      // User is signed in
-      this.authUser = user;
-    } else {
-      // User is signed out
-      this.authUser = null;
-    }
-  });
-}
-
-})
-
-
-
+  }
+});
 </script>
 
 <template>
@@ -144,15 +84,10 @@ mounted() {
         :to-do-list="toDoList"
         :auth-user="authUser"
     ></router-view>
-
-
-
-
-    <!--closes app-->
   </div>
-
 </template>
 
-<style >
-
+<style>
+/* Your styles */
 </style>
+

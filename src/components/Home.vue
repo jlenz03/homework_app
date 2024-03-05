@@ -22,6 +22,10 @@ export default {
       type: Array,
       required: true,
     },
+    authUser: {
+      type: Object,
+      default: () => ({})
+    }
 
 
   },
@@ -74,14 +78,16 @@ export default {
         <!--depending on which assignment type you choose it'll say New ____ -->
 
       </div>
-      <add-task-modal id="AddTaskModal"  :class-list="classList" @add-task="addTask" > </add-task-modal>
+      {{authUser.displayName}}
+      <add-task-modal id="AddTaskModal"  :class-list="classList" @add-task="addTask"
+                      :auth-user="authUser" > </add-task-modal>
 
       <div class="row">
 
         <!--this section below is gonna be part of user profile and will hold tier information and user information-->
         <h1><a href="#" class="navbar-brand">
           <img src="../../images/gold-tier.png" class="" alt="trophy tier for user" width="85" height="79">
-        </a>Hello, Julia</h1>
+        </a>Hello, {{authUser.displayName}}</h1>
 
       </div>
 
@@ -93,27 +99,33 @@ export default {
       <div class="row rounded bg-white">
 
         <to-do-list title="Due Tomorrow"
+                    v-if="authUser"
+                    :auth-user="authUser"
                     :class-list="classList"
                     collection="tomorrowList">
         </to-do-list>
 
         <to-do-list title="Due Next Week"
+                    v-if="authUser"
+                    :auth-user="authUser"
                     :class-list="classList"
                     collection="weekList"
         ></to-do-list>
 
         <to-do-list title="Due Sometime"
+                    v-if="authUser"
+                    :auth-user="authUser"
                     :class-list="classList"
                     collection="sometimeList"
         >
         </to-do-list>
 
       </div>
-      <statistics
-          :class-list="classList"
-          :to-do-list="toDoList"
-      >
-      </statistics>
+<!--      <statistics-->
+<!--          :class-list="classList"-->
+<!--          :to-do-list="toDoList"-->
+<!--      >-->
+<!--      </statistics>-->
 
 
 

@@ -21,6 +21,10 @@ export default {
     modelValue : {
       type: Object,
       required: true,
+    },
+    authUser:{
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['update:modelValue'],
@@ -29,7 +33,7 @@ export default {
       console.log(this.editClass);
 
       // Update the data in the Firebase database
-      db.collection('classList').doc(this.modelValue.id)
+      db.collection('users').doc(this.authUser.uid).collection('classList').doc(this.modelValue.id)
           .update({
             name: this.editClass.name,
             color: this.editClass.color,
