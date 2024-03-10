@@ -37,7 +37,7 @@ export default {
   methods: {
     getClassColor(className) {
       const classItem = this.classList.find(item => item.name === className);
-      console.log('class data recognized!', this.classList, className)
+      // console.log('class data recognized!', this.classList, className)
       return classItem ? classItem.color : 'black';
     },
 
@@ -62,25 +62,25 @@ export default {
     },
 
     updateCompletedStatus() {
-      // Call the getCompletedDate function before updating the database
-      this.getCompletedDate();
-      console.log("Item Object:", this.item);
+      this.getCompletedDate(); // Ensure user_complete is set
 
-      // Use the doc method with the document ID
-      const assignmentId = this.item.id; // Ensure you have the correct property name
+      const assignmentId = this.item.id;
 
       db.collection('users').doc(this.authUser.uid).collection('toDoList')
           .doc(assignmentId)
           .update({
             completed: this.item.completed,
+            user_complete: this.item.user_complete,
           })
           .then(() => {
             console.log("Updated completed status in Firebase:", this.item.completed);
+            console.log("Updated user_completed status in Firebase:", this.item.user_complete);
           })
           .catch((error) => {
             console.error("Error updating completed status:", error);
           });
     }
+
   },
 };
 </script>
@@ -99,12 +99,12 @@ export default {
 
         <EditToDoList :model-value="item" @update:modelValue="updateToDoList" :class-list="classList"
 
-                      :auth-user="authUser"></EditToDoList>
+                     v-if="authUser" :auth-user="authUser"></EditToDoList>
     <slot name="placement">
       <delete-to-do-list
         :model-value="item" @delete="deleteToDo => $emit('delete', deleteToDo)"
 
-        :auth-user="authUser">
+        v-if="authUser" :auth-user="authUser">
     </delete-to-do-list></slot>
 
 

@@ -3,7 +3,6 @@ import { defineComponent } from "vue";
 import AddTaskModal from "@/components/AddTaskModal.vue";
 import ToDoList from "@/components/ToDoList.vue";
 import Statistics from "@/components/Statistics.vue";
-import ClassItem from "@/models/ClassItemModel";
 import Timer from "@/models/TimerModel";
 import { User } from '@/models/User';
 import { firebase, db, auth, storage } from "@/firebase/index";
@@ -11,7 +10,7 @@ import Assignment from "@/models/Assignment";
 import Navigation from "@/components/Navigation.vue";
 import ClassList from "@/components/ClassList.vue";
 import SignIn from "@/pages/SignIn.vue";
-
+import ClassItem from "@/models/ClassItemModel";
 
 export default defineComponent({
   components: { ClassList, Navigation, Statistics, ToDoList, AddTaskModal, SignIn },
@@ -23,42 +22,43 @@ export default defineComponent({
       breakItDownList: [
         new Timer('', '', ''),
       ],
-      // authUser: null,
+      authUser: {},
       selectedItem: {},
     };
   },
   props: {
-
-    authUser: {
-      type: Object,
+    userInfo: {
+      type: Array, // Update this with the correct type for userInfo
+      default: () => [] // Example default value, change as needed
     },
-    userInfo:{
-      type: Array,
-    }
-  },
-
-  created() {
-    // Check for logged-in user
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // They are logged in
-        this.authUser = new User(user);
-      } else {
-        // Not logged in
-        console.log('logged out');
-        this.authUser = null;
-      }
-    });
-
-    // Load initial data
-    this.loadClassList();
+    // classList: {
+    //   type: Array,
+    //
+    // },
+    // toDoList: {
+    //   type: Array,
+    //
+    // },
   },
 
   methods: {
+
+
     loadClassList() {
-      db.collection("classList").onSnapshot(snapshot => {
-        this.classList = snapshot.docs.map(doc => new ClassItem(doc.data().name, doc.data().color));
-      });
+      if (!this.authUser) {
+        console.error('No authUser provided');
+        return;
+      }
+
+      // Load classes from Firebase into user's classList array
+      db.collection('users').doc(this.authUser.uid).collection('classList')
+          .onSnapshot(snapshot => {
+            this.classList = snapshot.docs.map(doc => new ClassItem(
+                doc.data().name,
+                doc.data().color,
+                doc.id
+            ));
+          });
     },
     addClass(newClassFromModal) {
       this.classList.push(newClassFromModal);
@@ -78,7 +78,27 @@ export default defineComponent({
     deleteClass(item) {
       this.selectedItem = item;
     }
-  }
+  },
+  created() {
+    // Check for logged-in user
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // They are logged in
+        console.log('logged in!')
+        this.authUser = new User(user);
+        // Load initial data
+        this.loadClassList();
+      } else {
+        // Not logged in
+        console.log('logged out');
+        this.authUser = null;
+      }
+    });
+
+
+  },
+
+
 });
 </script>
 
@@ -93,9 +113,9 @@ export default defineComponent({
     <router-view
         :class-list="classList"
         :to-do-list="toDoList"
+
         :auth-user="authUser"
         :user-info="userInfo"
-
     ></router-view>
   </div>
 </template>
@@ -103,4 +123,3 @@ export default defineComponent({
 <style>
 /* Your styles */
 </style>
-

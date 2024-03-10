@@ -44,8 +44,8 @@ export default {
       </div>
       <div class="col-6 d-flex justify-content-end">
         <edit-class-modal :modelValue="item" @update:modelValue="newItem => Object.assign(item, newItem)"
-                          :auth-user="authUser"></edit-class-modal>
-        <delete-class-modal :model-value="item" @delete="deleteIt => $emit('delete', deleteIt)" :auth-user="authUser" ></delete-class-modal>
+                         v-if="authUser" :auth-user="authUser"></edit-class-modal>
+        <delete-class-modal :model-value="item" @delete="deleteIt => $emit('delete', deleteIt)"  v-if="authUser" :auth-user="authUser" ></delete-class-modal>
       </div>
     </div>
   </li>

@@ -1,18 +1,18 @@
 <script>
-import { ref } from 'vue';
+// import { ref } from 'vue';
 import { auth, db } from '@/firebase';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import firebase from 'firebase/app';
 import AppModal from "@/components/AppModal.vue";
 import UserInfo from "@/components/UserInfo.vue";
-import {User} from "@/models/User";
+import { User } from "@/models/User";
 
 export default {
   name: "Register",
   components: { AppModal, UserInfo },
   data() {
     return {
-      newUser: new User('', '', '', ''),
+      authUser: new User('', '', '', ''),
     }
   },
   props: {
@@ -24,70 +24,54 @@ export default {
       type: Array,
       required: true,
     },
-    authUser: {
-      type: Object,
-      required: true,
-    },
   },
   methods: {
-    addUser: function () {
-
+    addUser(uid, displayName, email, photoURL) {
+      console.log(uid, displayName, email, photoURL)
       const userData = {
-        email: this.newUser.email,
-        password: this.newUser.password,
-        displayName: this.newUser.displayName,
-        photoURL: this.newUser.photoURL,
-        // completedAssignmentsCount: this.newUser.completedAssignmentsCount,
-        // lateAssignmentsCount: this.newUser.lateAssignmentsCount,
-        // onTimeCompletionRate: this.newUser.onTimeCompletionRate,
-        // tier: this.newUser.tier,
+        email: email,
+        displayName: displayName,
+        photoURL: photoURL,
       };
 
-      // Add user data to Firebase collection
-      db.collection('users')
-          .add(userData)
+      db.collection('users').doc(uid)
+          .set(userData)
           .then(docRef => {
-            console.log('User data added:', docRef.id);
-            // Clear the form (reset the object)
-            this.newUser = new User('', '', '', '');
+            console.log('User data added:', docRef);
+            //this.authUser = new User('', '', '', '');
+
+            // Emit an event to notify parent component
+            this.$emit('user-registered', userData);
           })
           .catch(error => {
             console.error('Error adding user data:', error);
           });
     },
-  },
-  setup() {
-    const email = ref('');
-    const password = ref('');
-    const displayName = ref('');
-    const router = useRouter();
-
-    const signInWithGoogle = () => {
+    signInWithGoogle() {
       let provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth()
           .signInWithPopup(provider)
           .then((userCredential) => {
             const user = userCredential.user;
+            this.addUser(user.uid, user.displayName, user.email, user.photoURL);
             console.log('Successfully signed in with Google!', user);
-            router.push({ name: 'home' }); // Redirect after sign-in
+            // this.$router.push({name: 'home'}); // Redirect after sign-in
           })
           .catch((error) => {
             console.error(error.code, error.message);
             alert('Google Sign-In Error. Please try again.');
           });
-    };
-
-    const register = () => {
-      auth.createUserWithEmailAndPassword(email.value, password.value)
+    },
+    register() {
+      auth.createUserWithEmailAndPassword(this.authUser.email, this.authUser.password)
           .then((userCredential) => {
             const user = userCredential.user;
-
-            // Set the display name for the user
+              this.addUser(user.uid, this.authUser.displayName, user.email, '');
             user.updateProfile({
-              displayName: displayName.value,
-            }).then(() => {
+              displayName: this.authUser.displayName,
+            }).then((user) => {
               console.log('Successfully registered with display name!', user);
-              router.push({ name: 'home' }); // Redirect after registration
+              // this.$router.push({name: 'home'});
             }).catch((error) => {
               console.error('Error updating display name:', error);
               alert('Registration Error. Please try again.');
@@ -97,9 +81,7 @@ export default {
             console.error(error.code, error.message);
             alert('Registration Error. Please try again.');
           });
-    };
-
-    return { email, password, displayName, signInWithGoogle, register };
+    },
   },
 };
 </script>
@@ -108,20 +90,20 @@ export default {
   <app-modal :id="id" title="Create an Account">
     <div class="mb-3">
       <label for="email" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="email" v-model="newUser.email" placeholder="name@example.com">
+      <input type="email" class="form-control" id="email" v-model="authUser.email" placeholder="name@example.com">
     </div>
 
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" v-model="newUser.password" placeholder="password">
+      <input type="password" class="form-control" id="password" v-model="authUser.password" placeholder="password">
     </div>
 
     <div class="mb-3">
       <label for="displayname" class="form-label">Display Name</label>
-      <input type="text" class="form-control" id="displayName" v-model="newUser.displayName" placeholder="display name here">
+      <input type="text" class="form-control" id="displayName" v-model="authUser.displayName" placeholder="display name here">
     </div>
 
-    <button class="btn btn-primary btn-block mb-3" @click="register" @click.prevent="addUser">Create Account</button>
+    <button class="btn btn-primary btn-block mb-3" @click.prevent="register">Create Account</button>
 
     <div class="text-center mb-3">
       <p>Or sign in with</p>

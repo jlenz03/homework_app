@@ -1,4 +1,4 @@
-//import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap'; //js
 import '@/scss/app.scss';
 // import 'fontawesome';

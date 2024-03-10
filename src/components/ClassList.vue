@@ -31,7 +31,7 @@ export default {
         return;
       }
 
-      // Load classes from Firebase into classList array
+      // Load classes from Firebase into  user's classList array
       db.collection('users').doc(this.authUser.uid).collection('classList')
           .onSnapshot(snapshot => {
             this.classList = snapshot.docs.map(doc => new ClassItem(
@@ -41,6 +41,9 @@ export default {
             ));
           });
     },
+  },
+  created() {
+    console.log('Class List in classList:', this.classList);
   },
 
   // IMPORTANT!!!

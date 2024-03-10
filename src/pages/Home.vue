@@ -6,25 +6,29 @@ import Statistics from "@/components/Statistics.vue";
 import Timer from "@/models/TimerModel";
 import Navigation from "@/components/Navigation.vue";
 import ClassList from "@/components/ClassList.vue";
+import UserInfo from "@/components/UserInfo.vue";
+import { User } from "@/models/User";
 
 
 
 export default {
   name: "Home",
-  components: {ClassList, Navigation, Statistics, ToDoList, AddTaskModal},
+  components: {ClassList, Navigation, Statistics, ToDoList, AddTaskModal, UserInfo},
 
   props: {
     classList: {
       type: Array,
       required: true,
     },
+
     toDoList: {
       type: Array,
       required: true,
     },
     authUser: {
       type: Object,
-      default: () => ({})
+      default: {}
+
     }
 
 
@@ -32,6 +36,10 @@ export default {
 
   // methods: usually "events" triggered by v-on:
   methods: {
+    addUser:function (newUserFromModal){
+      this.userInfo.push(newUserFromModal);
+    },
+
     addClass: function (newClassFromModal) {
       // add item to the list
       this.classList.push(newClassFromModal);
@@ -78,9 +86,9 @@ export default {
         <!--depending on which assignment type you choose it'll say New ____ -->
 
       </div>
-      {{authUser.displayName}}
+<!--      {{newUser.displayName}}-->
       <add-task-modal id="AddTaskModal"  :class-list="classList" @add-task="addTask"
-                      :auth-user="authUser" > </add-task-modal>
+                     v-if="authUser" :auth-user="authUser" > </add-task-modal>
 
       <div class="row">
 
@@ -88,6 +96,8 @@ export default {
         <h1><a href="#" class="navbar-brand">
           <img src="../../images/gold-tier.png" class="" alt="trophy tier for user" width="85" height="79">
         </a>Hello, {{authUser.displayName}}</h1>
+
+
 
       </div>
 
@@ -97,6 +107,7 @@ export default {
       <!--I want a blank table or some type of message to pop up when there's no assignments in the app but for now it's just blank until information is put in-->
       <h2>Upcoming Tasks</h2>
       <div class="row rounded bg-white">
+
 
         <to-do-list title="Due Tomorrow"
                     v-if="authUser"

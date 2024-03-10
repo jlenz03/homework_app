@@ -58,7 +58,7 @@ export default {
           <a class=" btn btn-primary" data-bs-toggle="modal" href="#AddClassModal" role="button"><i class="fa-solid fa-plus"></i> Add New Class</a>
         </div>
         <add-class-modal id="AddClassModal" @add-class="addClass"
-                         :auth-user="authUser"></add-class-modal>
+                         v-if="authUser"   :auth-user="authUser"></add-class-modal>
 
 
         <h1> Your Classes</h1>

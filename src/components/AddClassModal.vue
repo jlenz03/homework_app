@@ -35,18 +35,8 @@ export default {
   methods: {
 
     addClass: function () {
-      // console.log(this.newClass); // Check the 'newClass' object
-      // // add item to the list
-      // //this.classList.push(this.newClass);
-      // this.$emit('add-class', this.newClass);
-      //
-      // // clear the form
-      // this.$nextTick(() => {
-      //   // Clear the form (reset the object)
-      //   this.newClass = new ClassItem('', '',);
-      // });
 
-      // : add recipe to firebase
+      // : add class to firebase
       db.collection('users').doc(this.authUser.uid).collection('classList')
           .add(this.newClass)
           .then(docRef => {

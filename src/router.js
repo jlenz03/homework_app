@@ -17,28 +17,35 @@ const router = createRouter({
     routes,
 });
 
-
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
+    // This function will handle the authentication state
     const handleAuthState = () => {
         const currentUser = auth.currentUser;
         if (requiresAuth && !currentUser) {
             next({ name: 'sign-in' });
         } else {
-            next();
+            next(); // Call next only once
         }
     };
 
-
     if (requiresAuth) {
-        handleAuthState();
-        auth.onAuthStateChanged(() => {
-            handleAuthState();
-        });
+        if (!auth.currentUser) {
+            try {
+                await auth.signInAnonymously(); // Sign in anonymously
+                handleAuthState(); // Handle the authentication state
+            } catch (error) {
+                console.error('Error signing in:', error);
+                next({ name: 'sign-in' }); // Redirect to sign-in page on error
+            }
+        } else {
+            handleAuthState(); // Handle the authentication state
+        }
     } else {
-        next();
+        next(); // Call next only once
     }
 });
 
 export default router;
+

@@ -2,9 +2,10 @@
 import AppModal from "@/components/AppModal.vue";
 import { firebase, db, auth, storage } from "@/firebase/index";
 import Assignment from "@/models/Assignment";
+import ClassListItem from "@/components/ClassListItem.vue";
 export default {
   name: "AddTaskModal",
-  components: {AppModal},
+  components: {ClassListItem, AppModal},
   data(){
     return {
 
@@ -20,7 +21,7 @@ export default {
       required: true,
     },
     classList:{
-      type: Array, // Assuming classList is an array
+      type: Array,
       required: true,
     },
     authUser:{
@@ -79,7 +80,7 @@ export default {
           .add(taskData)
           .then(docRef => {
             // Clear the form (reset the object)
-            this.newTask = new Assignment('', '', false, '', '', '', []);
+            this.newTask = new Assignment('', '', '', false, '', '', []);
           })
           .catch(error => {
             console.error('Error adding list item', error);
@@ -90,24 +91,13 @@ export default {
     },
 
   },
+  created() {
+    console.log('Class List in AddTaskModal:', this.classList);
+  },
 
 };
-// console.log('old date', this.newTask.due)
-// // fix date
-// this.newTask.formatDate();
-//
-// console.log(this.newTask); // Check the 'newTask' object
-// console.log('New Task:', this.newTask); // Check the 'newTask' object
-// console.log('Class List:', this.classList); // Check the 'classList'
-//
-// // Add the task to your to-do list or perform other actions
-// this.$emit('add-task', this.newTask);
-// this.$emit('update:modelValue', this.newTask);
-//
-// this.$nextTick(() => {
-//   // Clear the form (reset the object)
-//   this.newTask = new Timer('', '', false,'', '', '', []);
-// });
+
+
 </script>
 
 <template>
@@ -162,7 +152,7 @@ export default {
           <label class="mr-sm-2" for="projectClass">Class</label>
           <select class="py-3 form-control shadow" id="projectClass" v-model="newTask.class_name">
             <option selected disabled>Choose Class...</option>
-            <option v-for="classItem in classList" :key="classItem.name" :value="classItem.name">{{ classItem.name }}</option>
+            <option  v-for="classItem in classList" :key="classItem.name" :value="classItem.name">{{ classItem.name }}</option>
           </select>
 
           <label for="projectDue">Due Date</label>

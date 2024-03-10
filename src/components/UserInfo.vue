@@ -17,9 +17,7 @@ export default {
       type: String,
       default: '',
     },
-    authUser: {
-      type: Object,
-    },
+
     collection: {
       type: String,
     },
@@ -35,10 +33,10 @@ export default {
         return;
       }
 
-      // Load classes from Firebase into classList array
+      // Load classes from Firebase into userInfo array
       db.collection('users').doc(this.authUser.uid).collection('userInfo')
           .onSnapshot(snapshot => {
-            let newUser = snapshot.docs.map(doc => {
+            let authUser = snapshot.docs.map(doc => {
               return new User(
                 doc.data().email,
                 doc.data().password,
@@ -51,7 +49,7 @@ export default {
               );
             });
               // Update the toDoList property with the new instances
-              this.userInfo = newUser;
+              this.userInfo = authUser;
           });
     },
   },

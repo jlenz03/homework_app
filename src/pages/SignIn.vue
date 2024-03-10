@@ -10,7 +10,6 @@ export default {
   props: {
     userInfo: {
       type: Array,
-      required: true,
     },
     authUser: {
       type: Object,
